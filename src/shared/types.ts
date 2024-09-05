@@ -1,7 +1,7 @@
 export type NoteInfo = {
   title: string
   lastEditTime: number
-  isActive?: boolean
+  isActive: boolean
 }
 
 export type NoteContent = string

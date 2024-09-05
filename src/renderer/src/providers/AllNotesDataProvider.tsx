@@ -6,18 +6,17 @@ type AllNoteDataContextType = {
   setNotes: Dispatch<SetStateAction<NoteInfo[]>>
 }
 
+const randomNote = () => {
+  return {
+    title: `test${Math.random()}`,
+    lastEditTime: Number(new Date()),
+    isActive: false
+  }
+}
+
 const AllNoteDataContext = createContext<AllNoteDataContextType>({
-  notes: [
-    {
-      title: 'test',
-      lastEditTime: Number(new Date())
-    },
-    {
-      title: 'test2',
-      lastEditTime: Number(new Date()),
-      isActive: true
-    }
-  ],
+  // TODO: ここでMarkNoteというフォルダに入っているファイルのみを取得して表示するように変更
+  notes: [...Array(5).keys()].map(randomNote),
   setNotes: () => {}
 })
 

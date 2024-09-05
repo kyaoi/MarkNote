@@ -2,15 +2,13 @@ import { cn, formatDateFromMs } from '@renderer/utils'
 import { NoteInfo } from '@shared/types'
 import { ComponentProps } from 'react'
 
-export type NotePreviewProps = NoteInfo & {
-  isActive?: boolean
-} & ComponentProps<'div'>
+export type NotePreviewProps = NoteInfo & ComponentProps<'div'>
 
 export const NotePreview = ({
   title,
   content,
   lastEditTime,
-  isActive = false,
+  isActive,
   className,
   ...props
 }: NotePreviewProps) => {
