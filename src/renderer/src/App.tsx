@@ -1,35 +1,46 @@
-import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
+import { useEffect, useState } from 'react'
+import {
+  Content,
+  Layout,
+  MarkdownEditor,
+  NotePreviewList,
+  Sidebar,
+  ActionButtonsRow
+} from './components'
+import { NoteInfo } from '@shared/types'
 
-function App(): JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
-
+export default function App() {
+  const [notes, setNotes] = useState<NoteInfo[]>()
+  const [selectNoteIndex, setSelectNoteIndex] = useState<number | undefined>()
+  const reloadNotes = async () => {
+    setNotes(await window.context.getNotes())
+  }
+  useEffect(() => {
+    reloadNotes()
+  })
   return (
     <>
-      <img alt="logo" className="logo" src={electronLogo} />
-      <div className="creator">Powered by electron-vite</div>
-      <div className="text">
-        Build an Electron app with <span className="react">React</span>
-        &nbsp;and <span className="ts">TypeScript</span>
-      </div>
-      <p className="tip">
-        Please try pressing <code>F12</code> to open the devTool
-      </p>
-      <div className="actions">
-        <div className="action">
-          <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
-            Documentation
-          </a>
-        </div>
-        <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
-            Send IPC
-          </a>
-        </div>
-      </div>
-      <Versions></Versions>
+      <Layout>
+        <Sidebar>
+          <ActionButtonsRow
+            className="flex justify-between mt-1"
+            notes={notes}
+            reloadNotes={reloadNotes}
+            selectNoteIndex={selectNoteIndex}
+          />
+          <NotePreviewList
+            className="mt-3 space-y-1"
+            notes={notes}
+            selectNoteIndex={selectNoteIndex}
+            setSelectNoteIndex={setSelectNoteIndex}
+          />
+        </Sidebar>
+        <Content>
+          {notes && notes?.length !== 0 && selectNoteIndex !== undefined && (
+            <MarkdownEditor currentNote={notes[selectNoteIndex]} />
+          )}
+        </Content>
+      </Layout>
     </>
   )
 }
-
-export default App
