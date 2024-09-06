@@ -1,21 +1,13 @@
 import { ActionButton, ActionButtonProps } from '@/components'
-import { useAllNotesList } from '@renderer/hooks/useNotesList'
 import { LuFileSignature } from 'react-icons/lu'
 
-export const NewNoteButton = ({ ...props }: ActionButtonProps) => {
-  const { setNotes } = useAllNotesList()
+type NewNoteButtonProps = ActionButtonProps & { reloadNotes: () => void }
 
+export const NewNoteButton = ({ reloadNotes, ...props }: NewNoteButtonProps) => {
   const handleCreation = async () => {
-    setNotes((prev) => [
-      ...prev,
-      {
-        title: 'New Note',
-        lastEditTime: Number(new Date()),
-        isActive: false
-      }
-    ])
+    await window.context.createNote()
+    reloadNotes()
   }
-
   return (
     <ActionButton onClick={handleCreation} {...props}>
       <LuFileSignature className="w-4 h-4 text-zinc-300" />

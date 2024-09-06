@@ -24,12 +24,12 @@ export const getNotes: GetNotes = async () => {
   return Promise.all(notes.map(getNoteInfoFromFilename))
 }
 
-export const getNoteInfoFromFilename = async(filename: string): Promise<NoteInfo> => {
+export const getNoteInfoFromFilename = async (filename: string): Promise<NoteInfo> => {
   const fileStats = await stat(`${getRootDir()}/${filename}`)
 
   return {
     title: filename.replace(/\.md$/, ''),
-    lastEditTime: fileStats.mtimeMs
+    lastEditTime: fileStats.mtimeMs,
   }
 }
 

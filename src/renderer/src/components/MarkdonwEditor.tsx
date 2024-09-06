@@ -6,11 +6,17 @@ import {
   quotePlugin
 } from '@mdxeditor/editor'
 import { useMarkdownEditor } from '@renderer/hooks/useMarkdownEditor'
+import { NoteInfo } from '@shared/types'
 
-export const MarkdownEditor = () => {
-  const { editorRef, note, handleAutoSaving, handleBlur } = useMarkdownEditor()
+export const MarkdownEditor = ({ currentNote }: { currentNote: NoteInfo }) => {
+  if (!currentNote) return null
 
-  if (!note) return null
+  const { editorRef, note, isReady, handleAutoSaving, handleBlur } = useMarkdownEditor(currentNote)
+
+  // ローディング状態を表示
+  if (!isReady) {
+    return null
+  }
 
   return (
     <MDXEditor

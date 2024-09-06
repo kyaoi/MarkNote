@@ -1,12 +1,23 @@
 import { ActionButton, ActionButtonProps } from '@/components'
-import { useAllNotesList } from '@renderer/hooks/useNotesList'
+import { NoteInfo } from '@shared/types'
 import { FaRegTrashCan } from 'react-icons/fa6'
 
-export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
-  const { setNotes } = useAllNotesList()
+type DeleteNoteButtonProps = ActionButtonProps & {
+  notes?: NoteInfo[]
+  reloadNotes: () => void
+  selectNoteIndex?: number
+}
 
+export const DeleteNoteButton = ({
+  notes,
+  reloadNotes,
+  selectNoteIndex,
+  ...props
+}: DeleteNoteButtonProps) => {
+  if (!notes || selectNoteIndex === undefined) return null
   const handleDelete = async () => {
-    setNotes((prev) => prev.filter((note) => !note.isActive))
+    await window.context.deleteNote(notes[selectNoteIndex].title)
+    reloadNotes()
   }
 
   return (

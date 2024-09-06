@@ -1,10 +1,11 @@
 export type NoteInfo = {
   title: string
   lastEditTime: number
-  isActive: boolean
 }
 
 export type NoteContent = string
+
+export type MarkdownNote = NoteInfo & { content: NoteContent }
 
 export type NoteData = NoteInfo & { content: NoteContent }
 

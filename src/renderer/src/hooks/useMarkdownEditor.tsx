@@ -1,28 +1,55 @@
 import { MDXEditorMethods } from '@mdxeditor/editor'
-import { useNoteData } from '@renderer/providers/NoteDataProvider'
 import { autoSavingTime } from '@shared/constants'
-import { NoteContent } from '@shared/types'
+import { NoteContent, NoteInfo } from '@shared/types'
 import { throttle } from 'lodash'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-export const useMarkdownEditor = () => {
-  const { note, setNote } = useNoteData()
-  useEffect(() => {
-    setNote({ title: '', content: '', lastEditTime: Number(new Date()) })
+export const useMarkdownEditor = (currentNote: NoteInfo) => {
+  const [note, setNote] = useState<{
+    title: string
+    content: NoteContent
+    lastEditTime: number
+  }>({
+    title: currentNote.title,
+    content: '',
+    lastEditTime: currentNote.lastEditTime
   })
+
+  const [isReady, setIsReady] = useState(false) // ステートとして管理
+
   useEffect(() => {
-    console.log('run useMarkdownEditor')
-    console.log('note', note)
-  }, [note])
+    const loadNoteContent = async () => {
+      try {
+        const content = await window.context.readNote(currentNote.title)
+        setNote({
+          title: currentNote.title,
+          content,
+          lastEditTime: currentNote.lastEditTime
+        })
+        setIsReady(true) // データ読み込み完了時に更新
+      } catch (error) {
+        console.error('Error loading note content:', error)
+      }
+    }
+    loadNoteContent()
+  }, [currentNote])
+
   const editorRef = useRef<MDXEditorMethods>(null)
 
   const handleAutoSaving = throttle(
     async (content: NoteContent) => {
-      if (!note) return
-
-      console.info('Auto saving:', note, content)
-
-      setNote({ title: note.title, content, lastEditTime: Number(new Date()) })
+      setNote((prevNote) => ({
+        ...prevNote,
+        content,
+        lastEditTime: Number(new Date())
+      }))
+      try {
+        await window.context.writeNote(currentNote.title, content)
+        console.log('Completed auto saving')
+      } catch (error) {
+        console.error('Error auto saving note:', error)
+        // エラーハンドリングを追加することを検討
+      }
     },
     autoSavingTime,
     {
@@ -32,22 +59,30 @@ export const useMarkdownEditor = () => {
   )
 
   const handleBlur = async () => {
-    if (!note) return
-
-    // handleAutoSaving.cancel()
+    handleAutoSaving.cancel()
 
     const content = editorRef.current?.getMarkdown()
-    console.info('handleBlur: Auto saving:', note, content)
-    console.log('typeof content', typeof content)
 
     if (content != null) {
-      setNote({ title: note.title, content, lastEditTime: Number(new Date()) })
+      setNote((prevNote) => ({
+        ...prevNote,
+        content,
+        lastEditTime: Number(new Date())
+      }))
+      try {
+        await window.context.writeNote(currentNote.title, content)
+        console.log('Completed blur saving')
+      } catch (error) {
+        console.error('Error saving note on blur:', error)
+        // エラーハンドリングを追加することを検討
+      }
     }
   }
 
   return {
     editorRef,
     note,
+    isReady,
     handleAutoSaving,
     handleBlur
   }

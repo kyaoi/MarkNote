@@ -1,15 +1,27 @@
 import { NotePreview } from '@/components'
-import { useAllNotesList } from '@renderer/hooks/useNotesList'
+import { NoteInfo } from '@shared/types'
 import { isEmpty } from 'lodash'
-import { ComponentProps } from 'react'
+import { ComponentProps, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export type NotePreviewListProps = ComponentProps<'ul'> & {
   onSelect?: () => void
+  notes?: NoteInfo[]
+  selectNoteIndex?: number
+  setSelectNoteIndex: (index: number) => void
 }
 
-export const NotePreviewList = ({ onSelect, className, ...props }: NotePreviewListProps) => {
-  const { notes, handleNoteSelect } = useAllNotesList()
+export const NotePreviewList = ({
+  onSelect,
+  notes,
+  selectNoteIndex,
+  setSelectNoteIndex,
+  className,
+  ...props
+}: NotePreviewListProps) => {
+  const handleNoteSelect = (index: number) => async () => {
+    setSelectNoteIndex(index)
+  }
 
   if (!notes) return null
 
@@ -26,6 +38,7 @@ export const NotePreviewList = ({ onSelect, className, ...props }: NotePreviewLi
       {notes.map((note, index) => (
         <NotePreview
           key={note.title + note.lastEditTime}
+          isActive={selectNoteIndex === index}
           onClick={handleNoteSelect(index)}
           {...note}
         />
