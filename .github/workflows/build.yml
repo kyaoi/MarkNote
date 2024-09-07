@@ -7,8 +7,7 @@ on:
 
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+    runs-on: windows-latest
 
     strategy:
       matrix:
@@ -38,6 +37,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/marknote Setup ${{ env.RELEASE_TAG }}.exe
+          files: |
+            dist/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
