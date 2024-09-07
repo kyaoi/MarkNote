@@ -4,6 +4,9 @@ import { resolve } from 'path'
 
 export default defineConfig({
   main: {
+    build: {
+      outDir: 'dist/main' // mainプロセスの出力ディレクトリを指定
+    },
     plugins: [externalizeDepsPlugin()],
     resolve: {
       alias: {
