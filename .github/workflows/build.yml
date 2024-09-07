@@ -33,13 +33,9 @@ jobs:
         id: get_tag
         run: echo "RELEASE_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: MarkNote-${{ env.RELEASE_TAG }} # タグ名をアーティファクト名に追加
-          path: |
-            release/*.exe
-            release/*.exe.blockmap
-            release/*.dmg
-            release/*.zip
-            release/latest*.yml
+          files: dist/marknote Setup ${{ env.RELEASE_TAG }}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
