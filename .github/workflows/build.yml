@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [windows-latest]
 
     steps:
       - name: Check out Git repository
@@ -26,15 +26,8 @@ jobs:
       - name: Install Yarn packages
         run: yarn install
 
-      - name: Build Application
-        run: |
-          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            yarn build:win
-          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
-            yarn build:mac
-          elif [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            yarn build:linux
-          fi
+      - name: Build Applicatiton
+        run: yarn build:win
 
       - name: Get Tag Name
         id: get_tag
@@ -43,9 +36,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            dist/marknote Setup ${{ env.RELEASE_TAG }}.exe
-            dist/marknote-${{ env.RELEASE_TAG }}.dmg
-            dist/marknote-${{ env.RELEASE_TAG }}.AppImage
+          files: dist/marknote Setup ${{ env.RELEASE_TAG }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
