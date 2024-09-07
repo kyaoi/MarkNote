@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "A Markdown Note taking app built with Electron",
   "license": "MIT",
-  "main": "./out/main/index.js",
+  "main": "./dist/main/index.js",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
