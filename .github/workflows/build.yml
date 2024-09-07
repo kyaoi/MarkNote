@@ -28,6 +28,8 @@ jobs:
 
       - name: Build Applicatiton
         run: yarn build:win
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Get Tag Name
         id: get_tag
