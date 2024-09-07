@@ -21,7 +21,7 @@
   "build": {
     "appId": "com.kyaoi.marknote",
     "files": [
-      "build/**/*"
+      "dist/**/*"
     ]
   },
   "dependencies": {
