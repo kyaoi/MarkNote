@@ -42,6 +42,7 @@ jobs:
           else
             echo "Tag does not exist."
             echo "::set-output name=tag_exists::false"
+          fi
         shell: bash
 
       - name: Create a new tag if it does not exist
