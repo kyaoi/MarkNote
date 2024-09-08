@@ -28,15 +28,6 @@ jobs:
       - name: Install Yarn packages
         run: yarn install
 
-      - name: Set Tag Version
-        run: |
-          version=${{ github.event.inputs.tag_name }}
-          if [[ "$version" =~ ^v[0-9]+ ]]; then
-            version=${version:1}
-          fi
-          echo "Updating package.json version to $version"
-          npm version --no-git-tag-version $version
-
       - name: Build Application
         run: yarn build:win
         env:
