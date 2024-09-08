@@ -6,3 +6,13 @@ body {
   background-color: #333;
   color: white;
 }
+
+._toolbarGroupOfGroups_uazmk_217,
+._toolbarToggleSingleGroup_uazmk_222 {
+  display: flex;
+  margin: 0 !important;
+  gap: 0.5rem;
+}
+._toolbarButton_uazmk_237 {
+  margin: 0 !important;
+}

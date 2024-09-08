@@ -5,8 +5,12 @@ import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
 import path from 'path'
 
 export const getRootDir = () => {
-  const documentsDir = app.getPath('documents')
-  return path.join(documentsDir, appDirectoryName)
+  if (process.env.NODE_ENV === 'development') {
+    return path.join(process.cwd(), appDirectoryName)
+  } else {
+    const documentsDir = app.getPath('documents')
+    return path.join(documentsDir, appDirectoryName)
+  }
 }
 
 export const getNotes: GetNotes = async () => {
@@ -91,7 +95,7 @@ export const deleteNote: DeleteNote = async (filename) => {
     type: 'warning',
     title: 'Delete note',
     message: `Are you sure you want to delete ${filename}?`,
-    buttons: ['Delete', 'Cancel'], // 0 is Delete, 1 is Cancel
+    buttons: ['Delete', 'Cancel'],
     defaultId: 1,
     cancelId: 1
   })

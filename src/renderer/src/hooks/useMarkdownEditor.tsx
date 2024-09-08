@@ -15,7 +15,7 @@ export const useMarkdownEditor = (currentNote: NoteInfo) => {
     lastEditTime: currentNote.lastEditTime
   })
 
-  const [isReady, setIsReady] = useState(false) // ステートとして管理
+  const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
     const loadNoteContent = async () => {
@@ -26,7 +26,7 @@ export const useMarkdownEditor = (currentNote: NoteInfo) => {
           content,
           lastEditTime: currentNote.lastEditTime
         })
-        setIsReady(true) // データ読み込み完了時に更新
+        setIsReady(true)
       } catch (error) {
         console.error('Error loading note content:', error)
       }
@@ -48,7 +48,6 @@ export const useMarkdownEditor = (currentNote: NoteInfo) => {
         console.log('Completed auto saving')
       } catch (error) {
         console.error('Error auto saving note:', error)
-        // エラーハンドリングを追加することを検討
       }
     },
     autoSavingTime,
@@ -74,7 +73,6 @@ export const useMarkdownEditor = (currentNote: NoteInfo) => {
         console.log('Completed blur saving')
       } catch (error) {
         console.error('Error saving note on blur:', error)
-        // エラーハンドリングを追加することを検討
       }
     }
   }
