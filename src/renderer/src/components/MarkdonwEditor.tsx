@@ -1,5 +1,6 @@
 import {
   BoldItalicUnderlineToggles,
+  CreateLink,
   InsertTable,
   InsertThematicBreak,
   ListsToggle,
@@ -48,6 +49,7 @@ export const MarkdownEditor = ({ currentNote }: { currentNote: NoteInfo }) => {
             <>
               <div className="flex gap-2 items-center space-x-4 p-2 rounded-md shadow">
                 <UndoRedo />
+                <CreateLink />
                 <BoldItalicUnderlineToggles />
                 <ListsToggle />
                 <InsertThematicBreak />
