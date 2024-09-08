@@ -1,12 +1,12 @@
 import { appDirectoryName, fileEncoding } from '@shared/constants'
 import { NoteInfo, CreateNote, DeleteNote, GetNotes, ReadNote, WriteNote } from '@shared/types'
-import { dialog } from 'electron'
+import { app, dialog } from 'electron'
 import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
-import { homedir } from 'os'
 import path from 'path'
 
 export const getRootDir = () => {
-  return `${homedir()}/${appDirectoryName}`
+  const appDir = app.getAppPath()
+  return `${path.join(appDir, appDirectoryName)}`
 }
 
 export const getNotes: GetNotes = async () => {
@@ -29,7 +29,7 @@ export const getNoteInfoFromFilename = async (filename: string): Promise<NoteInf
 
   return {
     title: filename.replace(/\.md$/, ''),
-    lastEditTime: fileStats.mtimeMs,
+    lastEditTime: fileStats.mtimeMs
   }
 }
 
