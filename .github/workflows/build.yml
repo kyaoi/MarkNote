@@ -1,9 +1,11 @@
 name: Build/release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        required: true
+        default: 'v1.0.0'
 
 jobs:
   release:
@@ -25,18 +27,18 @@ jobs:
       - name: Install Yarn packages
         run: yarn install
 
-      - name: Build Applicatiton
+      - name: Build Application
         run: yarn build:win
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Get Tag Name
-        id: get_tag
-        run: echo "RELEASE_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      - name: Set Tag Name
+        run: echo "RELEASE_TAG=${{ github.event.inputs.tag_name }}" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event.inputs.tag_name }}
           files: |
             dist/*.exe
         env:

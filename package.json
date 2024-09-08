@@ -25,10 +25,14 @@
     ]
   },
   "dependencies": {
+    "@codemirror/language": "^6.10.2",
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.0",
+    "@lezer/highlight": "^1.2.1",
     "@mdxeditor/editor": "^3.11.3",
-    "fs-extra": "^11.2.0"
+    "electron-builder-squirrel-windows": "^25.0.5",
+    "fs-extra": "^11.2.0",
+    "yjs": "^13.6.18"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^1.0.1",
