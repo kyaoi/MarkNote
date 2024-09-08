@@ -5,30 +5,37 @@ import { resolve } from 'path'
 export default defineConfig({
   main: {
     build: {
-      outDir: 'dist/main' // mainプロセスの出力ディレクトリを指定
+      outDir: 'dist/main',
+      sourcemap: true
     },
     plugins: [externalizeDepsPlugin()],
     resolve: {
       alias: {
-        '@/lib': resolve('src/main/lib'),
-        '@shared': resolve('src/shared')
+        '@/lib': resolve(__dirname, 'src/main/lib'),
+        '@shared': resolve(__dirname, 'src/shared')
       }
     }
   },
   preload: {
+    build: {
+      outDir: 'dist/preload',
+      sourcemap: true
+    },
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
-    assetsInclude: 'src/renderer/assets/**',
+    build: {
+      outDir: 'dist/renderer'
+    },
     resolve: {
       alias: {
-        '@renderer': resolve('src/renderer/src'),
-        '@shared': resolve('src/shared'),
-        '@/hooks': resolve('src/renderer/src/hooks'),
-        '@/assets': resolve('src/renderer/src/assets'),
-        '@/store': resolve('src/renderer/src/store'),
-        '@/components': resolve('src/renderer/src/components'),
-        '@/mocks': resolve('src/renderer/src/mocks')
+        '@renderer': resolve(__dirname, 'src/renderer/src'),
+        '@shared': resolve(__dirname, 'src/shared'),
+        '@/hooks': resolve(__dirname, 'src/renderer/src/hooks'),
+        '@/assets': resolve(__dirname, 'src/renderer/src/assets'),
+        '@/store': resolve(__dirname, 'src/renderer/src/store'),
+        '@/components': resolve(__dirname, 'src/renderer/src/components'),
+        '@/mocks': resolve(__dirname, 'src/renderer/src/mocks')
       }
     },
     plugins: [react()]
