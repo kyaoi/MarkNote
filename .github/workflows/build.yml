@@ -28,17 +28,27 @@ jobs:
       - name: Install Yarn packages
         run: yarn install
 
-      - name: Set Tag Version
-        run: |
-          version=${{ github.event.inputs.tag_name }}
-          if [[ "$version" =~ ^v[0-9]+ ]]; then
-            version=${version:1}
-          fi
-          echo "Updating package.json version to $version"
-          npm version --no-git-tag-version $version
-
       - name: Build Application
         run: yarn build:win
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Check if the tag already exists
+        id: check_tag
+        run: |
+          if git rev-parse "refs/tags/${{ github.event.inputs.tag_name }}" >/dev/null 2>&1; then
+            echo "Tag already exists."
+            echo "::set-output name=tag_exists::true"
+          else
+            echo "Tag does not exist."
+            echo "::set-output name=tag_exists::false"
+        shell: bash
+
+      - name: Create a new tag if it does not exist
+        if: steps.check_tag.outputs.tag_exists == 'false'
+        run: |
+          git tag ${{ github.event.inputs.tag_name }}
+          git push origin ${{ github.event.inputs.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
