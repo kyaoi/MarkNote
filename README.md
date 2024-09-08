@@ -2,6 +2,8 @@
 
 MarkNoteは、Windows向けのシンプルなMarkdownエディターです。アプリを起動して新しいファイルを作成すると、PCのドキュメントフォルダ内に`.md`ファイルが自動的に作成され、編集が可能になります。
 
+![image](https://github.com/user-attachments/assets/6132c2b3-bf61-4f2e-a9fc-24dbb32ad5d1)
+
 ## 使い方
 
 MarkNoteの基本操作はとても簡単です。以下の手順でMarkdownファイルを作成・編集できます。
@@ -29,6 +31,8 @@ MarkNoteは現在、**Windows**のみで使用可能です。
 # MarkNote (English)
 
 MarkNote is a simple Markdown editor for Windows. When you launch the app and create a new file, a `.md` file is automatically created in your PC's Documents folder, where you can edit the content.
+
+![image](https://github.com/user-attachments/assets/6132c2b3-bf61-4f2e-a9fc-24dbb32ad5d1)
 
 ## How to Use
 
