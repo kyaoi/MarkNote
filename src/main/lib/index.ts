@@ -5,8 +5,8 @@ import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
 import path from 'path'
 
 export const getRootDir = () => {
-  const appDir = app.getAppPath()
-  return `${path.join(appDir, appDirectoryName)}`
+  const documentsDir = app.getPath('documents')
+  return path.join(documentsDir, appDirectoryName)
 }
 
 export const getNotes: GetNotes = async () => {
